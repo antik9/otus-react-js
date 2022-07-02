@@ -45,7 +45,6 @@ export class FactorialExression implements Expression {
 }
 
 export interface FunctionImplementation {
-  name: string
   call(expr: Expression): number
 }
 

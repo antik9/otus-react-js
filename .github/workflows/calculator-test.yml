@@ -1,11 +1,9 @@
 ---
 name: Test calculator implementation
-description: Setup node and run tests
-
 on:
   push:
     paths:
-      - "./calculator/**"
+      - "calculator/**"
 
 jobs:
   test:
@@ -15,5 +13,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 14
-      - run: npm ci
+      - run: npm install -f
+        working-directory: ./calculator
       - run: npm test
+        working-directory: ./calculator
