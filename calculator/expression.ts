@@ -1,15 +1,17 @@
 export interface Expression {
-  evaluate(): number
-};
+  evaluate(): number;
+}
 
 export interface Operator {
-  precedence(): number
-  op: string
+  precedence: number;
+  op: string;
 }
 
 export class BinaryExpression implements Expression {
   operator: Operator;
+
   left: Expression;
+
   right: Expression;
 
   constructor(op: Operator, left: Expression, right: Expression) {
@@ -19,44 +21,56 @@ export class BinaryExpression implements Expression {
   }
 
   evaluate(): number {
-    switch ( this.operator.op ) {
-      case "+": return this.left.evaluate() + this.right.evaluate();
-      case "-": return this.left.evaluate() - this.right.evaluate();
-      case "*": return this.left.evaluate() * this.right.evaluate();
-      case "/": return this.left.evaluate() / this.right.evaluate();
-      case "^": return this.left.evaluate() ** this.right.evaluate();
-      default: throw "unexpected operator";
+    switch (this.operator.op) {
+      case "+":
+        return this.left.evaluate() + this.right.evaluate();
+      case "-":
+        return this.left.evaluate() - this.right.evaluate();
+      case "*":
+        return this.left.evaluate() * this.right.evaluate();
+      case "/":
+        return this.left.evaluate() / this.right.evaluate();
+      case "^":
+        return this.left.evaluate() ** this.right.evaluate();
+      default:
+        throw "unexpected operator";
     }
-  };
+  }
 }
 
 export class FactorialExression implements Expression {
   value: number;
+
   constructor(value: number) {
     this.value = value;
   }
 
   evaluate(): number {
     let result = 1;
-    let value = this.value;
-    while (value > 1) result *= value--;
+    let { value } = this;
+    while (value > 1) {
+      result *= value;
+      value -= 1;
+    }
     return result;
   }
 }
 
-export interface FunctionImplementation {
-  call(expr: Expression): number
-}
+export type FunctionImplementation = (expr: Expression) => number;
 
 export class FunctionExpression implements Expression {
-  fn: FunctionImplementation
+  fn: FunctionImplementation;
+
   expr: Expression;
+
   constructor(fn: FunctionImplementation, expr: Expression) {
     this.fn = fn;
     this.expr = expr;
   }
 
-  evaluate(): number { return this.fn.call(this.expr) }
+  evaluate(): number {
+    return this.fn(this.expr);
+  }
 }
 
 export class NumberExpression implements Expression {
@@ -66,5 +80,7 @@ export class NumberExpression implements Expression {
     this.value = v;
   }
 
-  evaluate(): number { return this.value };
-};
+  evaluate(): number {
+    return this.value;
+  }
+}
